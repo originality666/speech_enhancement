@@ -50,7 +50,7 @@ if __name__ == '__main__':
         for train_batch, train_clean, train_noisy in train_bar:
 
             # latent vector - normal distribution
-            z = nn.init.normal(torch.Tensor(train_batch.size(0), 1024, 8))
+            z = torch.randn(train_batch.size(0), 1024, 8)
             if torch.cuda.is_available():
                 train_batch, train_clean, train_noisy = train_batch.cuda(), train_clean.cuda(), train_noisy.cuda()
                 z = z.cuda()
@@ -91,12 +91,16 @@ if __name__ == '__main__':
 
             train_bar.set_description(
                 'Epoch {}: d_clean_loss {:.4f}, d_noisy_loss {:.4f}, g_loss {:.4f}, g_conditional_loss {:.4f}'
-                    .format(epoch + 1, clean_loss.data[0], noisy_loss.data[0], g_loss.data[0], g_cond_loss.data[0]))
+                .format(epoch + 1,
+                        clean_loss.item(),
+                        noisy_loss.item(),
+                        g_loss.item(),
+                        g_cond_loss.item()))
 
         # TEST model
         test_bar = tqdm(test_data_loader, desc='Test model and save generated audios')
         for test_file_names, test_noisy in test_bar:
-            z = nn.init.normal(torch.Tensor(test_noisy.size(0), 1024, 8))
+            z = torch.randn(train_batch.size(0), 1024, 8)
             if torch.cuda.is_available():
                 test_noisy, z = test_noisy.cuda(), z.cuda()
             test_noisy, z = Variable(test_noisy), Variable(z)

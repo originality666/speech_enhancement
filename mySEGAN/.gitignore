@@ -1,0 +1,4 @@
+data/
+epochs/
+results/
+__pycache__/

@@ -163,7 +163,7 @@ class Generator(nn.Module):
         """
         for m in self.modules():
             if isinstance(m, nn.Conv1d) or isinstance(m, nn.ConvTranspose1d):
-                nn.init.xavier_normal(m.weight.data)
+                nn.init.xavier_normal_(m.weight.data)
 
     def forward(self, x, z):
         """
@@ -275,7 +275,7 @@ class Discriminator(nn.Module):
         """
         for m in self.modules():
             if isinstance(m, nn.Conv1d):
-                nn.init.xavier_normal(m.weight.data)
+                nn.init.xavier_normal_(m.weight.data)
 
     def forward(self, x, ref_x):
         """
