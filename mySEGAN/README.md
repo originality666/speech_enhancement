@@ -45,3 +45,8 @@ The generated enhanced audio is on the same directory of input audio.
 
 ## Results
 The example results and the pre-train Generator weight can be downloaded from [BaiduYun](https://pan.baidu.com/s/1DrccLSyc9vPYsYambWkwPg)(access code:tzdd). 
+
+## New Modification
+```
+python test_audio.py ----file_name p232_160.wav --epoch_name generator-80.pkl
+```
