@@ -1,1 +1,5 @@
 python main_modify.py --resume epochs/best_model.pkl --start_epoch 61 --batch_size 64 --num_epochs 100
+
+python test_audio.py --file_name data/noisy_testset_wav/p232_106.wav --epoch_name epochs/best_model.pkl
+
+python test_audio_batch.py --input_dir data/noisy_testset_wav --output_dir results/enhanced_audio --epoch_name epochs/best_model.pkl
