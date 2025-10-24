@@ -48,5 +48,5 @@ The example results and the pre-train Generator weight can be downloaded from [B
 
 ## New Modification
 ```
-python test_audio.py ----file_name p232_160.wav --epoch_name generator-80.pkl
+python main_modify.py --resume epochs/best_model.pkl --start_epoch 6 --batch_size 64 --num_epochs 100
 ```

@@ -8,7 +8,7 @@ from scipy.io import wavfile
 from torch.autograd import Variable
 from tqdm import tqdm
 
-from data_preprocess import slice_signal, window_size, sample_rate
+from data_preprocess import slice_signal_modify, window_size, sample_rate
 from model import Generator
 from utils import emphasis
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         generator.cuda()
 
-    noisy_slices = slice_signal(FILE_NAME, window_size, 1, sample_rate)
+    noisy_slices = slice_signal_modify(FILE_NAME, window_size, 1, sample_rate)
     enhanced_speech = []
     for noisy_slice in tqdm(noisy_slices, desc='Generate enhanced audio'):
         z = nn.init.normal(torch.Tensor(1, 1024, 8))

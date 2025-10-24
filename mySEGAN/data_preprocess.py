@@ -28,6 +28,18 @@ def slice_signal(file, window_size, stride, sample_rate):
         slices.append(slice_sig)
     return slices
 
+def slice_signal_modify(file, window_size, stride, sample_rate):
+    import librosa
+    wav, sr = librosa.load(file, sr=sample_rate)
+    hop = int(window_size * stride)
+    slices = []
+    for start_idx in range(0, len(wav), hop):
+        end_idx = start_idx + window_size
+        slice_sig = wav[start_idx:end_idx]
+        if len(slice_sig) < window_size:
+            slice_sig = np.pad(slice_sig, (0, window_size - len(slice_sig)), mode='constant')
+        slices.append(slice_sig)
+    return slices
 
 def process_and_serialize(data_type):
     """
