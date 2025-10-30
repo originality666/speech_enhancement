@@ -1,0 +1,43 @@
+从第61轮继续训练
+python main_modify.py --resume epochs/best_model.pkl --start_epoch 61 --batch_size 64 --num_epochs 100
+
+单样本测试：
+python test_audio.py --file_name data/noisy_testset_wav/p232_106.wav --epoch_name epochs/best_model.pkl
+
+批量样本测试：
+python test_audio_batch.py --input_dir data/noisy_testset_wav --output_dir results/enhanced_audio --epoch_name epochs/best_model.pkl
+
+将增强后的样本进行打包
+zip -r enhanced_audio.zip enhanced_audio/
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+第 1 步：挖掘难样本
+
+运行 main_modify.py 并指定您的最佳模型路径，同时激活 --find_hard_samples 标志。
+
+python main_modify.py --resume "epochs/best_model.pkl" --find_hard_samples --batch_size 64
+
+这将会：
+
+加载 epochs/best_model.pkl，遍历整个训练集，计算每个样本的L1 loss，将loss高于平均值的样本文件名保存到 hard_samples.txt
+-------------------------------------------------------------------------------------------------------------------------------------
+第 2 步：在难样本上进行EMA训练
+
+运行 main_modify.py，再次指定您的最佳模型（它将作为训练的起点），并激活 --train_hard_samples 标志。
+
+python main_modify.py --resume "epochs/best_model.pkl" --train_hard_samples --hard_sample_file "hard_samples.txt" --num_epochs 50 --batch_size 64 --ema_momentum 0.999
+
+这将会：
+
+加载 epochs/best_model.pkl 到 generator 和 g_ema。
+
+从 hard_samples.txt 加载难样本列表。
+
+只在这些难样本上进行训练，共 50 个 epoch。
+
+在每一步训练后，使用 0.999 的动量更新 g_ema。
+
+评估和保存时，将使用 g_ema 模型。
+
+最终的最佳模型将保存为 epochs/best_model_hard_ema.pkl
